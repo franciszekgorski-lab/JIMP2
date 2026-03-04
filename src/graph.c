@@ -1,18 +1,41 @@
-#ifndef GRAPH
-#define GRAPH
+#include "graph.h"
 
-#include "vertex.h"
-#include "edge.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct _graph {
-	Vertex* Vertices;	// vertex list
-	Edge* Edges;		// edge list
-	int e_count;		// edge count
-	int v_count;		// vertex count
-} *Graph;
+Graph Graph_Construct(int te, int tv) {
+	Graph g = malloc(sizeof(Graph));
+	
+	g->e_count = te;
+	g->v_count = tv;
 
-Graph Graph_Construct(int te, int tv); // te - temporary edge num
-				       // tv - temporary vertex count
-void Graph_LoadFile(Graph g, const char* filepath);
+	for (int i = 0; i < te; i++) {
+		g->Edges[i] = Edge_Construct(&g->e_count);
+	}
 
-#endif
+	for (int i = 0; i < tv; i++) {
+		g->Vertices[i] = Vertex_Construct(&g->v_count);
+	}
+
+	return g;
+}
+
+int Graph_LoadFile(Graph g, const char* filepath) {
+	FILE* file;
+	if ( (file = fopen(filepath, "r")) == NULL ) {
+		return 1;
+	}
+
+	int id;
+	int A;
+	int B;
+	float w;
+
+	while ( fscanf(file, "%d %d %d %f", &id, &A, &B, &w) == 4) {
+		g->Vertices[A] = g->Edges[id]->A;
+		g->Vertices[B] = g->Edges[id]->B;
+		g->Edges[id]->weight = w;
+	}
+
+	return 0;
+}

@@ -3,8 +3,9 @@
 
 typedef struct _vertex {
 	float x, y;
+	int id;
 } *Vertex;
 
-Vertex Vertex_Construct(float tx, float ty);
+Vertex Vertex_Construct(int* id_assign);
 
 #endif

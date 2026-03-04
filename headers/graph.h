@@ -13,6 +13,6 @@ typedef struct _graph {
 
 Graph Graph_Construct(int te, int tv); // te - temporary edge num
 				       // tv - temporary vertex count
-void Graph_LoadFile(Graph g, const char* filepath);
+int Graph_LoadFile(Graph g, const char* filepath);
 
 #endif
