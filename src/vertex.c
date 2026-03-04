@@ -1,10 +1,4 @@
-#ifndef VERTEX
-#define VERTEX
-
-typedef struct _vertex {
-	float x, y;
-} *Vertex;
+#include "vertex.h"
 
 Vertex Vertex_Construct(float tx, float ty);
 
-#endif
