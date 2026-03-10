@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "graph.h"
+
 int main(int argc, char* argv[]) {
 
 	int opt;
@@ -28,7 +30,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (loadflag) {
-	
+	  
 	}
 
 	return 0;
