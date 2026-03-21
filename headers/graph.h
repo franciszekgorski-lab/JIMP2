@@ -11,8 +11,11 @@ typedef struct _graph {
 	int v_count;		// vertex count
 } *Graph;
 
-Graph Graph_Construct(int te, int tv); // te - temporary edge num
-				       // tv - temporary vertex count
-int Graph_LoadFile(Graph g, const char* filepath);
+Graph Graph_Construct();        // te - temporary edge num
+			        // tv - temporary vertex count
+Vertex Graph_AddVertex(Graph g, int id);
+void Graph_AddEdge(Graph g, int id, int idA, int idB, float w);
+void Graph_LoadFromFile(Graph g, const char* filepath);
+void Graph_Print(Graph g);
 
 #endif

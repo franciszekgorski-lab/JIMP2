@@ -2,11 +2,11 @@
 
 #include <stdlib.h>
 
-Vertex Vertex_Construct(int* id_assign) {
-	Vertex t = malloc(sizeof(Vertex));
+Vertex Vertex_Construct(int id) {
+	Vertex t = malloc(sizeof(struct _vertex));
 	t->x = 0;
 	t->y = 0;
-	t->id = (*id_assign)++;
+        t->id = id;
 
 	return t;
 }

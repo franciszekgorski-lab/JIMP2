@@ -3,13 +3,14 @@
 
 #include <stdlib.h>
 
-Edge Edge_Construct(int* id_assign) {
-	Edge t = malloc(sizeof(Edge));
+Edge Edge_Construct(int id, float w) {
+	Edge t = malloc(sizeof(struct _edge));
 
-	t->A = malloc(sizeof(Vertex));
-	t->B = malloc(sizeof(Vertex));
-	t->weight = 0;
-	t->id = (*id_assign)++;
+	t->A = NULL;
+	t->B = NULL;
+	t->weight = w;
+        t->id = id;
 
 	return t;
 }
+

@@ -6,31 +6,35 @@
 int main(int argc, char* argv[]) {
 
 	int opt;
+        char* filepath;
 	char loadflag = 0;
+        Graph g = Graph_Construct();
 
-	while ( (opt = getopt(argc, argv, "hf:")) != -1 ) {
+	while ( (opt = getopt(argc, argv, "hi:")) != -1 ) {
 		switch (opt) {
 
-		case 'f':
+		case 'i':
 			loadflag = 1;
+                        filepath = optarg;
 			break;
 
 		case 'h':
 			//usage description
-			printf("[HELP] ; Existing options: -f -h \n");
-			printf(" -f 'file_path', loads file \n");
+			printf("[HELP] ; Existing options: -i -h \n");
+			printf(" -i 'file_path', loads file \n");
 			printf(" -h , help \n");
 			break;
 
 		case '?':
-			//invalid opt
+	               	//invalid opt
 			printf("[ERROR] ; Unknown option\n");
 			break;
 		}
 	}
 
 	if (loadflag) {
-	  
+                Graph_AddEdge(g, 2, 5, 1, 0.43);
+                Graph_Print(g);   
 	}
 
 	return 0;

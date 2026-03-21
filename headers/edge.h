@@ -7,9 +7,9 @@ typedef struct _edge {
 	Vertex A;
 	Vertex B;
 	float weight;
-	int id;
+        int id;
 } *Edge;
 
-Edge Edge_Construct(int* id_assign);
+Edge Edge_Construct(int id, float w);
 
 #endif
