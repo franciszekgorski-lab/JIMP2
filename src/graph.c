@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 Graph Graph_Construct() {
         Graph t = malloc(sizeof(struct _graph));
@@ -81,4 +82,37 @@ void Graph_Print(Graph g) {
                 Vertex v = g->Vertices[i];
                 printf("%3d. (X, Y) = (%2.1f, %2.1f)\n", v->id, v->x, v->y);
         }
+}
+
+Vector2D Graph_GetForce(Vertex v0, Vertex v, char option) {
+        float x = (v0->x - v->x) < 0 ? (v->x - v0->x) : (v0->x - v->x);
+        float y = (v0->y - v->y) < 0 ? (v->y - v0->y) : (v0->y - v->y);
+
+        float dims_ratio;
+
+        if (y != 0) dims_ratio = x / y;
+        else dims_ration = 1;
+
+                
+        float x_vel = GENERAL_FORCE * dims_ratio;
+        float y_vel = GENERAL_FORCE / dims_ratio;
+
+        if (option == 0) {
+                if (v0->x < v->x) x_vel *= -1;
+                if (v0->y < v->y) y_vel *= -1;
+        } else {
+                if (v0->x > v->x) x_vel *= -1;
+                if (v0->y > v->y) y_vel *= -1;
+        }
+
+        Vector2D vel = Vector2D_Construct(x_vel, y_vel);
+
+        return vel;
+}
+
+float Graph_GetDistance(Vertex v0, Vertex v) {
+        float x = (v0->x - v->x) < 0 ? (v->x - v0->x) : (v0->x - v->x);
+        float y = (v0->y - v->y) < 0 ? (v->y - v0->y) : (v0->y - v->y);
+        
+        float distance = sqrt(x*x + y*y);
 }
