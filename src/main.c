@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (loadflag) {
-                Graph_AddEdge(g, 2, 5, 1, 0.43);
+                Graph_LoadFromFile(g, filepath);
                 Graph_Print(g);   
 	}
 

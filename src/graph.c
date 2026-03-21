@@ -63,6 +63,8 @@ void Graph_LoadFromFile(Graph g, const char* filepath) {
         while ( fscanf(file, "%d %d %d %f", &id, &idA, &idB, &w) == 4 ) {
                 Graph_AddEdge(g, id, idA, idB, w);
         }
+
+        fclose(file);
 }
 
 void Graph_Print(Graph g) {
