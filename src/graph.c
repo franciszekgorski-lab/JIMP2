@@ -53,7 +53,7 @@ void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
         g->e_count++;
 }
 
-void Graph_LoadFromFile(Graph g, const char* filepath) {
+int Graph_LoadFromFile(Graph g, const char* filepath) {
         FILE* file = fopen(filepath, "r");
 
         if (file == NULL) return;
@@ -71,12 +71,14 @@ void Graph_Print(Graph g) {
         printf("______________________EDGES_______________________\n");
         printf("AMOUNT: %d\n", g->e_count);
         for (int i = 0; i < g->e_count; i++) {
-                printf("%3d. %3d -> %3d : WEIGHT=%2.1f\n", g->Edges[i]->id, g->Edges[i]->A->id, g->Edges[i]->B->id, g->Edges[i]->weight);
+                Edge e = g->Edges[i];
+                printf("%3d. %3d -> %3d : WEIGHT=%2.1f\n", e->id, e->A->id, e->B->id, e->weight);
         }
 
         printf("_____________________VERTICES_____________________\n");
         printf("AMOUNT: %d\n", g->v_count);
         for (int i = 0; i < g->v_count; i++) {
-                printf("%3d. (X, Y) = (%2.1f, %2.1f)\n", g->Vertices[i]->id, g->Vertices[i]->x, g->Vertices[i]->y);
+                Vertex v = g->Vertices[i];
+                printf("%3d. (X, Y) = (%2.1f, %2.1f)\n", v->id, v->x, v->y);
         }
 }
