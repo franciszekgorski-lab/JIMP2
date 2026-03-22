@@ -15,4 +15,7 @@ Vertex Vertex_Construct(int id) {
 void Vertex_Move(Vertex v) {
         v->x += v->vel.x;
         v->y += v->vel.y;
+        v->vel.x = 0.0f;
+        v->vel.y = 0.0f;
+
 }

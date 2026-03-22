@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "vertex.h"
+#include "Myown.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,7 +58,7 @@ void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
 int Graph_LoadFromFile(Graph g, const char* filepath) {
         FILE* file = fopen(filepath, "r");
 
-        if (file == NULL) return;
+        if (file == NULL) return 1;
 
         int id, idA, idB; float w;
 
@@ -66,6 +67,7 @@ int Graph_LoadFromFile(Graph g, const char* filepath) {
         }
 
         fclose(file);
+        return 0;
 }
 
 void Graph_Print(Graph g) {
@@ -91,11 +93,24 @@ Vector2D Graph_GetForce(Vertex v0, Vertex v, char option) {
         float dims_ratio;
 
         if (y != 0) dims_ratio = x / y;
-        else dims_ration = 1;
+        else dims_ratio = 1;
 
-                
-        float x_vel = GENERAL_FORCE * dims_ratio;
-        float y_vel = GENERAL_FORCE / dims_ratio;
+        float x_vel = 0;
+        float y_vel = 0;
+
+        if (dims_ratio != 0) {
+                if (dims_ratio < 1) {
+                        x_vel = GENERAL_FORCE * dims_ratio;
+                        y_vel = GENERAL_FORCE - x_vel;
+                } else {
+                        dims_ratio = 1 / dims_ratio;
+                        y_vel = GENERAL_FORCE * dims_ratio;
+                        x_vel = GENERAL_FORCE - y_vel;
+                }
+        } else {
+                x_vel = 0;
+                y_vel = GENERAL_FORCE * sqrt(2);
+        }
 
         if (option == 0) {
                 if (v0->x < v->x) x_vel *= -1;
@@ -115,4 +130,24 @@ float Graph_GetDistance(Vertex v0, Vertex v) {
         float y = (v0->y - v->y) < 0 ? (v->y - v0->y) : (v0->y - v->y);
         
         float distance = sqrt(x*x + y*y);
+
+        return distance;
+}
+
+Vertex Graph_CalculateCenter(Graph g) {
+        Vertex center = Vertex_Construct(0);
+
+        float gen_x = 0;
+        float gen_y = 0;
+
+        for (int i = 0; i < g->v_count; i++) gen_x += g->Vertices[i]->x;
+        for (int i = 0; i < g->v_count; i++) gen_y += g->Vertices[i]->y;
+
+        gen_x /= g->v_count;
+        gen_y /= g->v_count;
+
+        center->x = gen_x;
+        center->y = gen_y;
+
+        return center;
 }

@@ -10,5 +10,6 @@ typedef struct _vertex {
 } *Vertex;
 
 Vertex Vertex_Construct(int id);
+void Vertex_Move(Vertex v);
 
 #endif

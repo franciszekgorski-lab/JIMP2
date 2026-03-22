@@ -10,10 +10,10 @@ TARGET = main
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $@
+	$(CC) $(OBJS) -o $@ -lm
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -lm
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

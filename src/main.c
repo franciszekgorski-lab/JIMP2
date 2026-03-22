@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "graph.h"
+#include "Myown.h"
 
 int main(int argc, char* argv[]) {
 
@@ -34,6 +35,7 @@ int main(int argc, char* argv[]) {
 
 	if (loadflag) {
                 Graph_LoadFromFile(g, filepath);
+                ForceFieldSim(g, 1, 200000);
                 Graph_Print(g);   
 	}
 

@@ -15,8 +15,10 @@ Graph Graph_Construct();        // te - temporary edge num
 			        // tv - temporary vertex count
 Vertex Graph_AddVertex(Graph g, int id);
 void Graph_AddEdge(Graph g, int id, int idA, int idB, float w);
-void Graph_LoadFromFile(Graph g, const char* filepath);
+int Graph_LoadFromFile(Graph g, const char* filepath);
 void Graph_Print(Graph g);
-void Graph_ApplyForce(Vertex v0, Vertex v);
+Vector2D Graph_GetForce(Vertex v0, Vertex v, char option);
+float Graph_GetDistance(Vertex v0, Vertex v);
+Vertex Graph_CalculateCenter(Graph g);
 
 #endif
