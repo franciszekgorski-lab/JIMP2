@@ -17,8 +17,6 @@ Vertex Graph_AddVertex(Graph g, int id);
 void Graph_AddEdge(Graph g, int id, int idA, int idB, float w);
 int Wczytywanie(Graph g, const char* filepath);
 void Graph_Print(Graph g);
-Vector2D Graph_GetForce(Vertex v0, Vertex v, char option);
-float Graph_GetDistance(Vertex v0, Vertex v);
-Vertex Graph_CalculateCenter(Graph g);
+void Zapisywanie(Graph g, const char* filepath);
 
 #endif

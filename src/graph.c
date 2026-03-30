@@ -86,68 +86,15 @@ void Graph_Print(Graph g) {
         }
 }
 
-Vector2D Graph_GetForce(Vertex v0, Vertex v, char option) {
-        float x = (v0->x - v->x) < 0 ? (v->x - v0->x) : (v0->x - v->x);
-        float y = (v0->y - v->y) < 0 ? (v->y - v0->y) : (v0->y - v->y);
+void Zapisywanie(Graph g, const char* filepath) {
+	FILE* file = fopen(filepath, "w");
 
-        float dims_ratio;
+	if (file == NULL) return 1;
 
-        if (y != 0) dims_ratio = x / y;
-        else dims_ratio = 1;
+	for (int i = 0; i < g->v_count; i++) {
+		Vertex v = g->Vertices[i];
+		fprintf(file, "%d %f %f\n", v->id, v->i, v->y);
+	}
 
-        float x_vel = 0;
-        float y_vel = 0;
-
-        if (dims_ratio != 0) {
-                if (dims_ratio < 1) {
-                        x_vel = GENERAL_FORCE * dims_ratio;
-                        y_vel = GENERAL_FORCE - x_vel;
-                } else {
-                        dims_ratio = 1 / dims_ratio;
-                        y_vel = GENERAL_FORCE * dims_ratio;
-                        x_vel = GENERAL_FORCE - y_vel;
-                }
-        } else {
-                x_vel = 0;
-                y_vel = GENERAL_FORCE * sqrt(2);
-        }
-
-        if (option == 0) {
-                if (v0->x < v->x) x_vel *= -1;
-                if (v0->y < v->y) y_vel *= -1;
-        } else {
-                if (v0->x > v->x) x_vel *= -1;
-                if (v0->y > v->y) y_vel *= -1;
-        }
-
-        Vector2D vel = Vector2D_Construct(x_vel, y_vel);
-
-        return vel;
-}
-
-float Graph_GetDistance(Vertex v0, Vertex v) {
-        float x = (v0->x - v->x) < 0 ? (v->x - v0->x) : (v0->x - v->x);
-        float y = (v0->y - v->y) < 0 ? (v->y - v0->y) : (v0->y - v->y);
-        
-        float distance = sqrt(x*x + y*y);
-
-        return distance;
-}
-
-Vertex Graph_CalculateCenter(Graph g) {
-        Vertex center = Vertex_Construct(0);
-
-        float gen_x = 0;
-        float gen_y = 0;
-
-        for (int i = 0; i < g->v_count; i++) gen_x += g->Vertices[i]->x;
-        for (int i = 0; i < g->v_count; i++) gen_y += g->Vertices[i]->y;
-
-        gen_x /= g->v_count;
-        gen_y /= g->v_count;
-
-        center->x = gen_x;
-        center->y = gen_y;
-
-        return center;
+	fclose(file);
 }
