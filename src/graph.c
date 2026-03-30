@@ -55,7 +55,7 @@ void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
         g->e_count++;
 }
 
-int Graph_LoadFromFile(Graph g, const char* filepath) {
+int Wczytywanie(Graph g, const char* filepath) {
         FILE* file = fopen(filepath, "r");
 
         if (file == NULL) return 1;

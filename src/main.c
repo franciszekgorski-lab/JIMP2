@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
 	if (loadflag) {
                 Graph_LoadFromFile(g, filepath);
-                ForceFieldSim(g, 1, 200000);
+                ForceFieldSim(g, 1, 100000);
                 Graph_Print(g);   
 	}
 
