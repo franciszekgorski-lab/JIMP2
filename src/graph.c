@@ -1,6 +1,5 @@
 #include "graph.h"
 #include "vertex.h"
-#include "Myown.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,15 +85,25 @@ void Graph_Print(Graph g) {
         }
 }
 
-void Zapisywanie(Graph g, const char* filepath) {
-	FILE* file = fopen(filepath, "w");
+void Zapisywanie(Graph g, const char* filepath, char flags) {
+	if ((flags&0b1000) == 0b1000) {
+		FILE* file = fopen(filepath, "w");
 
-	if (file == NULL) return;
+		if (file == NULL) return;
 
-	for (int i = 0; i < g->v_count; i++) {
-		Vertex v = g->Vertices[i];
-		fprintf(file, "%d %f %f\n", v->id, v->x, v->y);
+		for (int i = 0; i < g->v_count; i++) {
+			Vertex v = g->Vertices[i];
+			fprintf(file, "%d %f %f\n", v->id, v->x, v->y);
+		}
+
+		fclose(file);
+	} else if ((flags&0b1000) != 0b1000){
+		FILE* file = fopen(filepath, "wb");
+		
+		if (file == NULL) return;
+
+		fwrite(g->Vertices, sizeof(Vertex), g->v_count, file);
+
+		fclose(file);
 	}
-
-	fclose(file);
 }

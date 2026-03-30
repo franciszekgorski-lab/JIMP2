@@ -17,6 +17,6 @@ Vertex Graph_AddVertex(Graph g, int id);
 void Graph_AddEdge(Graph g, int id, int idA, int idB, float w);
 int Wczytywanie(Graph g, const char* filepath);
 void Graph_Print(Graph g);
-void Zapisywanie(Graph g, const char* filepath);
+void Zapisywanie(Graph g, const char* filepath, char flags);
 
 #endif
