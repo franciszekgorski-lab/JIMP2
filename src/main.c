@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "graph.h"
 #include "Tutte.h"
@@ -12,7 +13,7 @@ int main(int argc, char* argv[]) {
 	char flags = 0b0000;
         Graph g = Graph_Construct();
 
-	while ( (opt = getopt(argc, argv, "i:o:p")) != -1 ) {
+	while ( (opt = getopt(argc, argv, "f:i:o:p")) != -1 ) {
 		switch (opt) {
 
 		case 'i':
@@ -29,6 +30,13 @@ int main(int argc, char* argv[]) {
 			flags |= 0b0100;
 			break;
 
+		case 'f':
+			if (strcmp(optarg, "txt") == 0) flags |= 0b1000;
+			else if (strcmp(optarg, "bin") != 0) {
+				printf("Format must be txt or bin.");
+			}
+			break;
+
 		case '?':
 	               	//invalid opt
 			printf("[ERROR] ; Unknown option\n");
@@ -42,7 +50,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	if ( (flags&0b0010) == 0b0010) {
-                Zapisywanie(g, output_file);
+                Zapisywanie(g, output_file, flags);
 	}
 
 	if ( (flags&0b0100) == 0b0100) {

@@ -1,5 +1,5 @@
-#ifndef MYOWN
-#define MYWON
+#ifndef TUTTE
+#define TUTTE
 
 #include "graph.h"
 
