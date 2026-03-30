@@ -89,11 +89,11 @@ void Graph_Print(Graph g) {
 void Zapisywanie(Graph g, const char* filepath) {
 	FILE* file = fopen(filepath, "w");
 
-	if (file == NULL) return 1;
+	if (file == NULL) return;
 
 	for (int i = 0; i < g->v_count; i++) {
 		Vertex v = g->Vertices[i];
-		fprintf(file, "%d %f %f\n", v->id, v->i, v->y);
+		fprintf(file, "%d %f %f\n", v->id, v->x, v->y);
 	}
 
 	fclose(file);
