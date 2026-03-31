@@ -85,25 +85,54 @@ void Graph_Print(Graph g) {
         }
 }
 
+int Index(Graph g, Vertex v) {
+        int i;
+        for (i = 0; i < g->v_count; i++) {
+                if (v == g->Vertices[i]) return i;
+        }
+
+        return -1;
+}
+
 void Zapisywanie(Graph g, const char* filepath, char flags) {
-	if ((flags&0b1000) == 0b1000) {
-		FILE* file = fopen(filepath, "w");
+	if ( (flags&0b00100000) != 0b00100000) {
+                if ((flags&0b00001000) == 0b00001000) {
+		        FILE* file = fopen(filepath, "w");
 
-		if (file == NULL) return;
+		        if (file == NULL) return;
 
-		for (int i = 0; i < g->v_count; i++) {
-			Vertex v = g->Vertices[i];
-			fprintf(file, "%d %f %f\n", v->id, v->x, v->y);
-		}
+		        for (int i = 0; i < g->v_count; i++) {
+			        Vertex v = g->Vertices[i];
+			        fprintf(file, "%d %f %f\n", v->id, v->x, v->y);
+		        }
 
-		fclose(file);
-	} else if ((flags&0b1000) != 0b1000){
-		FILE* file = fopen(filepath, "wb");
+		        fclose(file);
+                } else if ((flags&0b00001000) != 0b00001000){
+		        FILE* file = fopen(filepath, "wb");
 		
-		if (file == NULL) return;
+		        if (file == NULL) return;
 
-		fwrite(g->Vertices, sizeof(Vertex), g->v_count, file);
+		        fwrite(g->Vertices, sizeof(Vertex), g->v_count, file);
 
-		fclose(file);
-	}
+		        fclose(file);
+	        }
+        } else {
+                FILE* file = fopen(filepath, "w");
+
+                if (file == NULL) return;
+
+                fprintf(file, "%d %d\n", g->v_count, g->e_count);
+
+                for (int i = 0; i < g->v_count; i++) {
+                        Vertex v = g->Vertices[i];
+                        fprintf(file, "%f %f\n", v->x, v->y);
+                }
+
+                for (int i = 0; i < g->e_count; i++) {
+                        Edge e = g->Edges[i];
+                        fprintf(file, "%d %d\n", Index(g, e->A), Index(g, e->B));
+                }
+
+                fclose(file);
+        }
 }
