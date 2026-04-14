@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 	if ( (flags&0b00010000) == 0b00010000) {
 		fruchterman_reingold(g, 500, time(NULL));
 	} else {
-		ForceFieldSim(g, 1, 100000);
+		prototype(g, 1000000, 0);
 	}
 
 	if ( (flags&0b00000010) == 0b00000010) {
