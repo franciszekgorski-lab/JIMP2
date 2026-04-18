@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ALGORITHM="$1"
+TUTTE="tutte"
+FRUCHTERMAN="fruchterman"
+
+A_PARAM=""
+
+if [ "$ALGORITHM" ==  "$TUTTE"]; then
+        A_PARAM="tutte"
+elif [ "$ALGORITHM" == "$FRUCHTERMAN"]; then
+        A_PARAM="fruchterman"
+else
+        echo "Wrong algorithm!"
+fi
