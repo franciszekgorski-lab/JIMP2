@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "Tutte.h"
 #include "graph.h"
 
 #define INPUT           0b00000001

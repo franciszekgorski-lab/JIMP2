@@ -99,9 +99,9 @@ Vertices that appear in edges but haven't been declared yet are created automati
 
 ## Algorithms
 
-### Force Simulation (`tutte`, default)
+### Force Simulation — inspired by Tutte (`tutte`, default)
 
-A physics-based simulation where vertices repel each other like electric charges (Coulomb's law), and edges act as **inextensible threads** — they allow vertices to move closer but prevent them from exceeding a maximum length. The simulation runs until the total kinetic energy of the system drops below a threshold, indicating the graph has reached equilibrium.
+A physics-based simulation inspired by the Tutte embedding idea of placing vertices relative to their neighbors. Vertices repel each other like electric charges (Coulomb's law), and edges act as **inextensible threads** — they allow vertices to move closer together but prevent them from exceeding a maximum length. When a constraint is violated, the positions are corrected and the outward velocity components are zeroed out. The simulation runs until the total kinetic energy of the system drops below a threshold, indicating equilibrium has been reached.
 
 Key parameters (defined in `simulation.c`):
 
@@ -128,25 +128,21 @@ A proper Tutte embedding: the largest biconnected component is detected via BFS,
 ```
 .
 ├── Makefile
+├── main                        # Compiled executable (after make)
+├── data                        # Sample output data
+├── visual                      # Visualizer tool
 ├── src/                        # Source files
 │   ├── main.c                  # Argument parsing, top-level control flow
 │   ├── graph.c                 # Graph structure, loading, saving
 │   ├── vertex.c                # Vertex struct and movement
 │   ├── edge.c                  # Edge struct
 │   ├── Vector2D.c              # 2D vector type
-│   ├── simulation.c            # Force simulation with edge constraints
+│   ├── simulation.c            # Force-directed simulation inspired by Tutte
 │   ├── fruchterman-reingold.c  # Fruchterman-Reingold algorithm
-│   └── Tutte.c                 # Tutte embedding
-├── headers/                    # Header files
-│   ├── graph.h
-│   ├── vertex.h
-│   ├── edge.h
-│   ├── Vector2D.h
-│   ├── simulation.h
-│   ├── fruchterman-reingold.h
-│   └── Tutte.h
+│   └── Tutte.c                 # Proper Tutte embedding (Gauss-Seidel)
+├── headers/                    # Header files (.h)
 ├── obj/                        # Compiled object files (auto-created by make)
-└── graphs/                     # Example input graphs
+└── graphs/                     # Example input graphs (wheel, etc.)
 ```
 
 ---
