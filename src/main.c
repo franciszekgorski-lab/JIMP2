@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 	if ( (flags&ALGORYTHM) == ALGORYTHM) {
 		fruchterman_reingold(g, 500, time(NULL));
 	} else {
-		ForceFieldSim(g, 0, 10000);
+		Physics(g, 1000);
                 ret_mask |= 0b10;
 	}
 
