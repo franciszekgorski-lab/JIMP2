@@ -6,9 +6,19 @@ A C program that reads a weighted graph from a file and computes a 2D layout usi
 
 ## Building
 
+Requires `gcc` and `make`. The `obj/` directory is created automatically.
+
 ```bash
-gcc -o graph_layout main.c graph.c vertex.c edge.c Vector2D.c simulation.c fruchterman-reingold.c Tutte.c -lm
+make
 ```
+
+To clean build artifacts:
+
+```bash
+make clean
+```
+
+The Makefile compiles all `src/*.c` files, looks for headers in `headers/`, links with `-lm`, and produces the `main` executable.
 
 ---
 
@@ -31,13 +41,13 @@ gcc -o graph_layout main.c graph.c vertex.c edge.c Vector2D.c simulation.c fruch
 
 ```bash
 # Fruchterman-Reingold, text output
-./graph_layout -i mygraph.txt -o out.txt -a fruchterman -f txt
+./main -i graphs/wheel -o out.txt -a fruchterman -f txt
 
 # Force simulation, visualizer output
-./graph_layout -i mygraph.txt -o out.vis -v
+./main -i graphs/wheel -o out.vis -v
 
 # Print result to console
-./graph_layout -i mygraph.txt -o out.txt -f txt -p
+./main -i graphs/wheel -o out.txt -f txt -p
 ```
 
 ---
@@ -117,14 +127,26 @@ A proper Tutte embedding: the largest biconnected component is detected via BFS,
 
 ```
 .
-├── main.c                  # Argument parsing, top-level control flow
-├── graph.c / graph.h       # Graph structure, loading, saving
-├── vertex.c / vertex.h     # Vertex struct and movement
-├── edge.c / edge.h         # Edge struct
-├── Vector2D.c / Vector2D.h # 2D vector type
-├── simulation.c            # Force simulation with edge constraints
-├── fruchterman-reingold.c  # Fruchterman-Reingold algorithm
-└── Tutte.c / Tutte.h       # Tutte embedding
+├── Makefile
+├── src/                        # Source files
+│   ├── main.c                  # Argument parsing, top-level control flow
+│   ├── graph.c                 # Graph structure, loading, saving
+│   ├── vertex.c                # Vertex struct and movement
+│   ├── edge.c                  # Edge struct
+│   ├── Vector2D.c              # 2D vector type
+│   ├── simulation.c            # Force simulation with edge constraints
+│   ├── fruchterman-reingold.c  # Fruchterman-Reingold algorithm
+│   └── Tutte.c                 # Tutte embedding
+├── headers/                    # Header files
+│   ├── graph.h
+│   ├── vertex.h
+│   ├── edge.h
+│   ├── Vector2D.h
+│   ├── simulation.h
+│   ├── fruchterman-reingold.h
+│   └── Tutte.h
+├── obj/                        # Compiled object files (auto-created by make)
+└── graphs/                     # Example input graphs
 ```
 
 ---
