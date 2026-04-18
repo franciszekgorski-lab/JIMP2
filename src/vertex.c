@@ -15,7 +15,9 @@ Vertex Vertex_Construct(int id) {
 void Vertex_Move(Vertex v) {
         v->x += v->vel.x;
         v->y += v->vel.y;
-        v->vel.x = 0.0f;
-        v->vel.y = 0.0f;
+}
 
+void Vertex_ApplyForce(Vertex v) {
+	v->vel.x += v->force.x;
+	v->vel.y += v->force.y;
 }
