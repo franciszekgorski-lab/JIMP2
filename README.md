@@ -117,10 +117,6 @@ Key parameters (defined in `simulation.c`):
 
 A classical force-directed layout algorithm. Vertices repel each other globally (force ∝ `k²/dist`) while edges attract connected pairs (force ∝ `dist²/k`, scaled by edge weight). A temperature parameter limits the maximum displacement per step and decreases over time, acting as a cooling schedule. Final positions are normalized to `[0, 1]`.
 
-### Tutte Embedding (internal, `ForceFieldSim`)
-
-A proper Tutte embedding: the largest biconnected component is detected via BFS, its outer cycle is placed on a circle, and interior vertices are iteratively placed at the weighted average of their neighbors using Gauss-Seidel relaxation.
-
 ---
 
 ## Project Structure
@@ -128,21 +124,24 @@ A proper Tutte embedding: the largest biconnected component is detected via BFS,
 ```
 .
 ├── Makefile
-├── main                        # Compiled executable (after make)
-├── data                        # Sample output data
-├── visual                      # Visualizer tool
-├── src/                        # Source files
-│   ├── main.c                  # Argument parsing, top-level control flow
-│   ├── graph.c                 # Graph structure, loading, saving
-│   ├── vertex.c                # Vertex struct and movement
-│   ├── edge.c                  # Edge struct
-│   ├── Vector2D.c              # 2D vector type
-│   ├── simulation.c            # Force-directed simulation inspired by Tutte
-│   ├── fruchterman-reingold.c  # Fruchterman-Reingold algorithm
-│   └── Tutte.c                 # Proper Tutte embedding (Gauss-Seidel)
-├── headers/                    # Header files (.h)
-├── obj/                        # Compiled object files (auto-created by make)
-└── graphs/                     # Example input graphs (wheel, etc.)
+├── main                        # Skompilowany plik wykonywalny (po make)
+├── data                        # Przykładowe dane wyjściowe
+├── visual                      # Narzędzie do wizualizacji
+├── src/                        # Pliki źródłowe
+│   ├── main.c                  # Parsowanie argumentów, główny przepływ
+│   ├── graph.c                 # Struktura grafu, wczytywanie, zapisywanie
+│   ├── vertex.c                # Wierzchołek: konstruktor, ruch
+│   ├── edge.c                  # Krawędź: konstruktor
+│   ├── Vector2D.c              # Typ wektora 2D
+│   ├── simulation.c            # Symulacja fizyczna inspirowana Tuttem
+│   └── fruchterman-reingold.c  # Algorytm Fruchtermana-Reingolda
+├── headers/                    # Pliki nagłówkowe
+│   ├── graph.h
+│   ├── vertex.h
+│   ├── edge.h
+│   └── Vector2D.h
+├── obj/                        # Pliki .o (tworzone automatycznie przez make)
+└── graphs/                     # Przykładowe grafy wejściowe
 ```
 
 ---
