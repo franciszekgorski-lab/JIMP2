@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+// alokuje pusty graf
 Graph Graph_Construct() {
         Graph t = malloc(sizeof(struct _graph));
         t->Vertices = NULL;
@@ -15,6 +16,7 @@ Graph Graph_Construct() {
         return t;
 }
 
+// dodaje wierzcholek do grafu, realloc tablicy wierzcholkow
 Vertex Graph_AddVertex(Graph g, int id) {
         if (g->Vertices == NULL) {
                 g->Vertices = (Vertex*)malloc(sizeof(Vertex));
@@ -29,6 +31,7 @@ Vertex Graph_AddVertex(Graph g, int id) {
         return g->Vertices[g->v_count - 1];
 }
 
+// dodaje krawedz, szuka wierzcholkow po id, jesli nie istnieja to je tworzy
 void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
         if (g->Edges == NULL) {
                 g->Edges = (Edge*)malloc(sizeof(Edge));
@@ -54,6 +57,7 @@ void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
         g->e_count++;
 }
 
+// wczytuje graf z pliku tekstowego, format: id idA idB waga
 int Wczytywanie(Graph g, const char* filepath) {
         FILE* file = fopen(filepath, "r");
 
@@ -69,6 +73,7 @@ int Wczytywanie(Graph g, const char* filepath) {
         return 0;
 }
 
+// debug print - lista krawedzi i wierzcholkow z pozycjami
 void Graph_Print(Graph g) {
         printf("______________________EDGES_______________________\n");
         printf("AMOUNT: %d\n", g->e_count);
@@ -85,6 +90,7 @@ void Graph_Print(Graph g) {
         }
 }
 
+// pomocnicza - zwraca indeks wierzcholka w tablicy Vertices
 int Index(Graph g, Vertex v) {
         int i;
         for (i = 0; i < g->v_count; i++) {
@@ -94,6 +100,10 @@ int Index(Graph g, Vertex v) {
         return -1;
 }
 
+// zapisuje graf do pliku, tryb zalezy od flag
+// bit5 (0b00100000) = format dla visualizera: naglowek + pozycje + krawedzie jako indeksy
+// bit3 (0b00001000) = txt: id x y per linia
+// domyslnie binarnie (fwrite struktury)
 void Zapisywanie(Graph g, const char* filepath, char flags) {
 	if ( (flags&0b00100000) != 0b00100000) {
                 if ((flags&0b00001000) == 0b00001000) {
@@ -117,6 +127,7 @@ void Zapisywanie(Graph g, const char* filepath, char flags) {
 		        fclose(file);
 	        }
         } else {
+                // format visualizera: pierwsza linia to n m, potem pozycje, potem pary indeksow krawedzi
                 FILE* file = fopen(filepath, "w");
 
                 if (file == NULL) return;
