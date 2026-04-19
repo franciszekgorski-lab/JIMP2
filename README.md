@@ -111,7 +111,7 @@ Key parameters (defined in `simulation.c`):
 | `damping` | `0.7` | Velocity damping per step |
 | `MIN_VEL` | `0.001` | Energy threshold for stop condition |
 | `RADIUS` | `5` | Starting circle radius |
-| `MAX_EDGE_LEN` | `8.0` | Maximum allowed edge length |
+| `MAX_EDGE_LEN` | `2.0` | Maximum allowed edge length |
 
 ### Fruchterman-Reingold (`-a fruchterman`)
 
