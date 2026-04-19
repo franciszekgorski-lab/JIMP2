@@ -8,7 +8,7 @@
 #define MIN_VEL 0.001
 #define MAX_VEL 10
 #define RADIUS 5
-#define MAX_EDGE_LEN 8.0f
+#define MAX_EDGE_LEN 2.0f   // zmniejszone z 8.0f – nitki teraz faktycznie działają
 
 Vector2D dist(Vertex v0, Vertex v1, float* distance) {
         float dx = v1->x - v0->x;
@@ -18,10 +18,11 @@ Vector2D dist(Vertex v0, Vertex v1, float* distance) {
         d.x = dx;
         d.y = dy;
 
-        *distance = sqrt(pow(dx, 2.0) + pow(dy, 2.0));
+        *distance = sqrt(dx*dx + dy*dy);
 
         return d;
 }
+
 void apply_constraints(Graph g) {
         for (int i = 0; i < g->e_count; i++) {
                 Vertex A = g->Edges[i]->A;
@@ -29,27 +30,28 @@ void apply_constraints(Graph g) {
 
                 float dx = B->x - A->x;
                 float dy = B->y - A->y;
-                float dist = sqrt(dx*dx + dy*dy);
+                float d = sqrt(dx*dx + dy*dy);
 
-                if (dist > MAX_EDGE_LEN) {
-                        // korekcja pozycji
-                        float correction = (dist - MAX_EDGE_LEN * g->Edges[i]->weight) / dist * 0.5f;
+                float limit = MAX_EDGE_LEN * g->Edges[i]->weight;
+
+                if (d > limit && d > 0.0001f) {
+                        // korekcja pozycji – przesuń oba wierzchołki do siebie
+                        float correction = (d - limit) / d * 0.5f;
                         A->x += dx * correction;
                         A->y += dy * correction;
                         B->x -= dx * correction;
                         B->y -= dy * correction;
 
                         // znormalizowany wektor wzdłuż krawędzi
-                        float nx = dx / dist;
-                        float ny = dy / dist;
+                        float nx = dx / d;
+                        float ny = dy / d;
 
                         // składowa prędkości A wzdłuż krawędzi (iloczyn skalarny)
                         float dot_A = A->vel.x * nx + A->vel.y * ny;
                         // składowa prędkości B wzdłuż krawędzi
                         float dot_B = B->vel.x * nx + B->vel.y * ny;
 
-                        // odejmij tylko rozciągającą część —
-                        // A "ciągnie" w kierunku +nx, B w kierunku -nx
+                        // odejmij tylko rozciągającą część
                         if (dot_A > 0) {
                                 A->vel.x -= dot_A * nx;
                                 A->vel.y -= dot_A * ny;
@@ -77,6 +79,8 @@ void apply_forces(Graph g, Vertex v0) {
 
                 dvector = dist(v0, v1, &distance);
 
+                if (distance < 0.0001f) continue;  // zabezpieczenie przed dzieleniem przez zero
+
                 dvector.x *= -1.0;
                 dvector.y *= -1.0;
 
@@ -101,9 +105,6 @@ int handle_damping(Vertex v0) {
         float velocity = sqrt(pow(v0->vel.x, 2.0) + pow(v0->vel.y, 2.0));
 
         if (velocity <= MIN_VEL) return 1;
-        if (velocity >= MAX_VEL) {
-
-        }
 
         return 0;
 }
@@ -126,9 +127,9 @@ void Physics(Graph g, int max_i) {
     
                 for (int j = 0; j < g->v_count; j++) {
                         Vertex v0 = g->Vertices[j];
-                        handle_damping(v0);
-                        apply_forces(g, v0);
-                        Vertex_Move(v0);
+                        apply_forces(g, v0);    // 1. najpierw siły
+                        handle_damping(v0);     // 2. potem tłumienie
+                        Vertex_Move(v0);        // 3. na końcu ruch
                         total_energy += v0->vel.x * v0->vel.x + v0->vel.y * v0->vel.y;
                 }
             
@@ -136,6 +137,8 @@ void Physics(Graph g, int max_i) {
 
                 if (total_energy < MIN_VEL * MIN_VEL * g->v_count) break;
         }
+
+        // wyśrodkuj graf względem pierwszego wierzchołka
         float dx = -(g->Vertices[0]->x);
         float dy = -(g->Vertices[0]->y);
 
@@ -149,4 +152,3 @@ void Physics(Graph g, int max_i) {
 
         printf("%d\n", i);
 }
- 
