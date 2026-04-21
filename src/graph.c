@@ -12,6 +12,8 @@ Graph Graph_Construct() {
         t->Edges = NULL;
         t->v_count = 0;
         t->e_count = 0;
+        t->e_list_size = 100;
+        t->v_list_size = 100;
 
         return t;
 }
@@ -19,9 +21,12 @@ Graph Graph_Construct() {
 // dodaje wierzcholek do grafu, realloc tablicy wierzcholkow
 Vertex Graph_AddVertex(Graph g, int id) {
         if (g->Vertices == NULL) {
-                g->Vertices = (Vertex*)malloc(sizeof(Vertex));
-        } else {
-                g->Vertices = (Vertex*)realloc(g->Vertices, (g->v_count + 1) * sizeof(Vertex));
+                g->Vertices = (Vertex*)malloc(g->v_list_size * sizeof(Vertex));
+        }
+
+        if (g->v_count == g->v_list_size - 1) {
+                g->v_list_size += 100;
+                g->Vertices = (Vertex*)realloc(g->Vertices, g->v_list_size * sizeof(Vertex));
         }
 
         g->Vertices[g->v_count] = Vertex_Construct(id);
@@ -34,9 +39,12 @@ Vertex Graph_AddVertex(Graph g, int id) {
 // dodaje krawedz, szuka wierzcholkow po id, jesli nie istnieja to je tworzy
 void Graph_AddEdge(Graph g, int id, int idA, int idB, float w) {
         if (g->Edges == NULL) {
-                g->Edges = (Edge*)malloc(sizeof(Edge));
-        } else {
-                g->Edges = (Edge*)realloc(g->Edges, (g->e_count + 1) * sizeof(Edge));
+                g->Edges = (Edge*)malloc(g->e_list_size * sizeof(Edge));
+        }
+
+        if (g->e_count == g->e_list_size - 1) {
+                g->e_list_size += 100;
+                g->Edges = (Edge*)realloc(g->Edges, g->e_list_size * sizeof(Edge));
         }
 
         g->Edges[g->e_count] = Edge_Construct(id, w);

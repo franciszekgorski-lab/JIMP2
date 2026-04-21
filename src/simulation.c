@@ -35,16 +35,15 @@ void apply_constraints(Graph g) {
                 float limit = MAX_EDGE_LEN * g->Edges[i]->weight;
 
                 if (d > limit && d > 0.0001f) {
-                        // korekcja pozycji – przesuń oba wierzchołki do siebie
-                        float correction = (d - limit) / d * 0.5f;
+                        float inv_d = 1.0f / d;
+                        float correction = (d - limit) * inv_d * 0.5f;
                         A->x += dx * correction;
                         A->y += dy * correction;
                         B->x -= dx * correction;
                         B->y -= dy * correction;
 
-                        // znormalizowany wektor wzdłuż krawędzi
-                        float nx = dx / d;
-                        float ny = dy / d;
+                        float nx = dx * inv_d;
+                        float ny = dy * inv_d;
 
                         // składowa prędkości A wzdłuż krawędzi (iloczyn skalarny)
                         float dot_A = A->vel.x * nx + A->vel.y * ny;
@@ -66,9 +65,6 @@ void apply_constraints(Graph g) {
 }
 
 void apply_forces(Graph g, Vertex v0) {
-        Vector2D dvector;
-        float distance;
-
         v0->force.x = 0;
         v0->force.y = 0;
         
@@ -77,21 +73,16 @@ void apply_forces(Graph g, Vertex v0) {
                 
                 if (v1->id == v0->id) continue;
 
-                dvector = dist(v0, v1, &distance);
+                float dx = v0->x - v1->x; // odwrocony kierunek od razu
+                float dy = v0->y - v1->y;
+                float dist2 = dx*dx + dy*dy; // kwadrat odleglosci, bez sqrt
 
-                if (distance < 0.0001f) continue;  // zabezpieczenie przed dzieleniem przez zero
+                if (dist2 < 0.00001f) continue;
 
-                dvector.x *= -1.0;
-                dvector.y *= -1.0;
-
-                dvector.x /= pow(distance, 2.0);
-                dvector.y /= pow(distance, 2.0);
-
-                dvector.x *= k;
-                dvector.y *= k;
-
-                v0->force.x += dvector.x;
-                v0->force.y += dvector.y;
+                // sila: k / dist^2, kierunek wbudowany w dx/dy
+                float factor = k / dist2;
+                v0->force.x += dx * factor;
+                v0->force.y += dy * factor;
         }
 
         v0->vel.x += v0->force.x;
@@ -102,7 +93,7 @@ int handle_damping(Vertex v0) {
         v0->vel.x *= damping;
         v0->vel.y *= damping;
 
-        float velocity = sqrt(pow(v0->vel.x, 2.0) + pow(v0->vel.y, 2.0));
+        float velocity = sqrt(v0->vel.x * v0->vel.x + v0->vel.y * v0->vel.y);
 
         if (velocity <= MIN_VEL) return 1;
 
@@ -149,6 +140,4 @@ void Physics(Graph g, int max_i) {
                 g->Vertices[j]->x += dx;
                 g->Vertices[j]->y += dy;
         }
-
-        printf("%d\n", i);
 }

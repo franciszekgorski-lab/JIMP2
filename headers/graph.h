@@ -9,6 +9,8 @@ typedef struct _graph {
 	Edge* Edges;		// edge list
 	int e_count;		// edge count
 	int v_count;		// vertex count
+        int e_list_size;
+        int v_list_size;
 } *Graph;
 
 Graph Graph_Construct();        // te - temporary edge num
