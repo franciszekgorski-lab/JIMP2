@@ -61,9 +61,9 @@ int main(int argc, char* argv[]) {
 			}
 			break;
 
-                case 'v': // tryb wyjscia dla visualizera (inny format pliku)
-                        flags |= VISUALIZE;
-                        break;
+        case 'v': // tryb wyjscia dla visualizera (inny format pliku)
+            flags |= VISUALIZE;
+            break;
 
 		case '?':
 			printf("[ERROR] ; Unknown option\n");
